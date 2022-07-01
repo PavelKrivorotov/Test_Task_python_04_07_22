@@ -19,3 +19,6 @@ database: sqlite.
 PS. Если MinIo будет ругаться или не работать, то скорее всего требуется создать новые access_key и secret_key.
     Для этого требуется перейти по адресу, который MinIO предоставит и войти под именем "minioadmin" и паролем "minioadmin"
     и создать access_key и secret_key и внести изменения в main/settings.py file
+    
+
+Тесты реализовать не успел; Извините)
