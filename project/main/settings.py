@@ -31,6 +31,15 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+# Test Database connect
+
+test_SQLALCHEMY_DATABASE_URL = "sqlite:///./test_database.db"
+
+test_engine = create_engine(test_SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread" : False})
+
+test_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+
+
 # MinIo connect
 
 MINIO_URL = "http://localhost:9000"

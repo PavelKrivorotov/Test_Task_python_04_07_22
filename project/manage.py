@@ -1,6 +1,5 @@
 
-from fastapi import Depends, FastAPI, status
-# status.HTTP_2
+from fastapi import Depends, FastAPI
 
 from sqlalchemy.orm import Session
 
@@ -10,19 +9,28 @@ from file_handler.schemas import (
     RequestPostPhotoSchema, RequestGetDeletePhotoSchema, ResponsePostPhotoSchema,
     ResponseGetPhotoSchema, ResponseDeletePhotoSchema)
 from file_handler.backend import AbstractPhotos
-from main.settings import Base, SessionLocal, engine
+from main.settings import Base, SessionLocal, engine, test_SessionLocal, test_engine
 
 
 Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=test_engine)
+# print(Base.metadata.tables)
+# print(type(Base.metadata.tables['users'].c))
 
 app = FastAPI()
-
 
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
+        db.close()
+
+def get_db_test():
+    db = test_SessionLocal()
+    try:
+        yield db
+    except:
         db.close()
 
 @app.post("/users/registration/", response_model=UserResponseSchema)
