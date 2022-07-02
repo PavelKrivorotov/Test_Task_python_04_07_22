@@ -42,5 +42,6 @@ MINIO_SECRET_KEY = "17cdq3AO3hC7tJgicEGcBWPOa7yMue2n"
 CLIENT = boto3.resource('s3', endpoint_url = MINIO_URL, aws_access_key_id = MINIO_ACCESS_KEY, aws_secret_access_key = MINIO_SECRET_KEY,
                         config = Config(signature_version='s3v4'))
 
-# buck = CLIENT.Bucket('20220107')
-# buck.create()
+IDK = boto3.client('s3', endpoint_url = MINIO_URL, aws_access_key_id = MINIO_ACCESS_KEY, aws_secret_access_key = MINIO_SECRET_KEY,
+                    config = Config(signature_version='s3v4'))
+

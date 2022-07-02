@@ -60,7 +60,9 @@ class AbstractPhotos():
             return ResponseGetPhotoSchema(describtion="Photos is not detected!", status_code=204, code=code, data=data)
 
         for photo in photos:
-            img = f'http://localhost:9000/photos/{photo.date.strftime("%Y%m%d")}/{photo.name}'
+            bucket = photo.date.strftime("%Y%m%d")
+            key = photo.name
+            img = settings.IDK.generate_presigned_url('get_object', Params={'Bucket' : bucket, "Key" : key}, ExpiresIn=3600)
 
             obj_1 = PhotoExtand(name=photo.name, date=photo.date, img = img)
             data.append(obj_1)
