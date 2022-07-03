@@ -8,7 +8,7 @@ from main import settings
 from .models import UserDbModel
 from .schemas import UserResponseSchema
 
-class NewAbstractUser():
+class AbstractUser():
     def __init__(self, db: Session, id: int = 0, email: str = None, password: str = None, token: str = None):
         self.db = db
         self.id = id
@@ -32,23 +32,26 @@ class NewAbstractUser():
         self.db.commit()
         self.db.refresh(user)
 
-        return NewAbstractUser(db=self.db, id=user.id, email=self.email, password=self.password)
+        self.id = user.id
+        self.token = self._get_token()
+
+        return AbstractUser(db=self.db, id=self.id, email=self.email, password=self.password, token=self.token)
 
 
 
-class NewAuthentication():
+class Authentication():
     def __init__(self, db: Session):
         self.db = db
     
-    def registartion(self, email: str, password: str):
+    def registration(self, email: str, password: str):
         user = self.db.query(UserDbModel).filter(UserDbModel.email == email).first()
     
         if user:
             return UserResponseSchema(describtion="User exists in db!", status_code=400,  token=None)
 
-        user = NewAbstractUser(db=self.db, email=email, password=password)._create_user()
-        token = user._get_token()
-        return UserResponseSchema(describtion="Create new user!", status_code=201, token=token)
+        user = AbstractUser(db=self.db, email=email, password=password)._create_user()
+        # token = user._get_token()
+        return UserResponseSchema(describtion="Create new user!", status_code=201, token=user.token)
     
     def authentication(self, email: str, password: str):
         user = self.db.query(UserDbModel).filter(UserDbModel.email == email).first()
@@ -59,7 +62,7 @@ class NewAuthentication():
         if not (user.password == password):
             return UserResponseSchema(describtion="User not exists!", status_code=401, token=None)
 
-        user = NewAbstractUser(db=self.db, id=user.id, email=email, password=password)
+        user = AbstractUser(db=self.db, id=user.id, email=email, password=password)
         token = user._get_token()
         return UserResponseSchema(describtion="Update user token!", status_code=202, token=token)
 

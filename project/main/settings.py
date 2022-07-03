@@ -33,11 +33,11 @@ Base = declarative_base()
 
 # Test Database connect
 
-test_SQLALCHEMY_DATABASE_URL = "sqlite:///./test_database.db"
+SQLALCHEMY_DATABASE_URL_test = "sqlite:///./test_database.db"
 
-test_engine = create_engine(test_SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread" : False})
+engine_test = create_engine(SQLALCHEMY_DATABASE_URL_test, connect_args={"check_same_thread" : False})
 
-test_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+SessionLocal_test = sessionmaker(autocommit=False, autoflush=False, bind=engine_test)
 
 
 # MinIo connect
